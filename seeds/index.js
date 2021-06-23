@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost:27017/yelp-camp", {
+//const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/yelp-camp";
+const dbUrl = "mongodb+srv://ajil:WOiPD3Fwkkj8px1H@cluster0.6jxxl.mongodb.net/yelpCamp?retryWrites=true&w=majority";
+mongoose.connect(dbUrl, {
 	useNewUrlParser: true,
 	useCreateIndex: true,
 	useUnifiedTopology: true,
@@ -28,7 +30,7 @@ const seedDB = async () => {
 			title: `${sample(descriptors)} ${sample(places)}`,
 			location: `${cities[random1000].city}, ${cities[random1000].state}`,
 			geometry: { "type" : "Point", "coordinates" : [ cities[random1000].longitude, cities[random1000].latitude ] },
-			author: "60cf47e65c8afa27941da6c9",
+			author: "60d35d7f0005d11cd00e707c",
 			images: [
 				{
 					url: "https://res.cloudinary.com/ajilp/image/upload/v1624296475/YelpCamp/vbsnazuzoqsxxjx9y5jd.jpg",
