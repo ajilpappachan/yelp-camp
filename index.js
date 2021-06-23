@@ -6,6 +6,7 @@ const express = require("express");
 const app = express();
 
 const session = require("express-session");
+const mongoDBStore = require("connect-mongo");
 const flash = require("connect-flash");
 
 const User = require("./models/user");
@@ -15,8 +16,8 @@ const helmet = require("helmet");
 const ExpressError = require("./utils/expressError");
 
 const mongoose = require("mongoose");
-const dbUrl = process.env.DB_URL;
-mongoose.connect("mongodb://localhost:27017/yelp-camp", {
+const dbUrl = "mongodb://localhost:27017/yelp-camp"; //process.env.DB_URL;
+mongoose.connect(dbUrl, {
 	useNewUrlParser: true,
 	useCreateIndex: true,
 	useUnifiedTopology: true,
@@ -50,7 +51,18 @@ app.use(mongoSanitize({
 	replaceWith: '_'
 }));
 
+const store = mongoDBStore.create({
+	mongoUrl: dbUrl,
+	secret: "thisisasecret",
+	touchAfter: 24 * 60 * 60,
+})
+
+store.on('error', function(err) {
+	console.log("SESSION STORE ERROR: ", err);
+})
+
 const sessionConfig = {
+	store,
 	name: 'session',
 	secret: "thisisasecret",
 	resave: false,
