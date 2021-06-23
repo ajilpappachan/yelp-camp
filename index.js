@@ -16,7 +16,7 @@ const helmet = require("helmet");
 const ExpressError = require("./utils/expressError");
 
 const mongoose = require("mongoose");
-const dbUrl = "mongodb://localhost:27017/yelp-camp"; //process.env.DB_URL;
+const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/yelp-camp";
 mongoose.connect(dbUrl, {
 	useNewUrlParser: true,
 	useCreateIndex: true,
@@ -51,9 +51,11 @@ app.use(mongoSanitize({
 	replaceWith: '_'
 }));
 
+const secret = process.env.SECRET || "thisisasecret";
+
 const store = mongoDBStore.create({
 	mongoUrl: dbUrl,
-	secret: "thisisasecret",
+	secret,
 	touchAfter: 24 * 60 * 60,
 })
 
@@ -64,7 +66,7 @@ store.on('error', function(err) {
 const sessionConfig = {
 	store,
 	name: 'session',
-	secret: "thisisasecret",
+	secret,
 	resave: false,
 	saveUninitialized: true,
 	cookie: {
