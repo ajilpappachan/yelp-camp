@@ -13,7 +13,7 @@ const User = require("./models/user");
 
 const helmet = require("helmet");
 
-const ExpressError = require("./utils/expressError");
+const ExpressError = require("./utils/ExpressError");
 
 const mongoose = require("mongoose");
 const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/yelp-camp";
